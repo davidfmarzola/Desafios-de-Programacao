@@ -14,6 +14,14 @@ def orderedlist(studentsmatrix):
     grades = sorted(grades)
     return grades
 
+def secminval(studentsmatrix, listadenotasordenadas):
+    minvalue=listadenotasordenadas[0]
+    for i in range(1,len(listadenotasordenadas)):
+        if listadenotasordenadas[i]>minvalue:
+            secondminvalue = listadenotasordenadas[i]
+            break
+    return secondminvalue
+
 def nameofstudentswithsecondlowestgrade(studentsmatrix, secondlowervalue):
     liststudentssecondlowestgrade = []
     for i in range(len(studentsmatrix)):
@@ -24,5 +32,5 @@ def nameofstudentswithsecondlowestgrade(studentsmatrix, secondlowervalue):
 
 studentsmatrix = nestedlist()
 listadenotasordenadas = orderedlist(studentsmatrix)
-secondlowervalue = listadenotasordenadas[1]
+secondlowervalue = secminval(studentsmatrix, listadenotasordenadas)
 nameofstudentswithsecondlowestgrade(studentsmatrix, secondlowervalue)
