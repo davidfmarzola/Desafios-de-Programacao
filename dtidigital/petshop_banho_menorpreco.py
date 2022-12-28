@@ -1,31 +1,33 @@
 # 03/08/2018 3 5
 # <data><quantidade de cães pequenos><quantidade de cães grandes>
-def indicedodia(data):
+def indicar_indice_do_dia(data):
     from datetime import date
     dia, mes, ano = data.split('/')
-    data = date(year=int(ano), month=int(mes), day=int(dia))
+    try:
+        data = date(year=int(ano), month=int(mes), day=int(dia))
+    except ValueError:
+        print('Dia esta fora do intervalo para o mes e/ou mes nao esta no intervalo (1, 12)')
+        ler_entradas_arquivo()
     return data.weekday()
 
-
-def custototaldecadacanil(indicedasemana, caespequenos, caesgrandes):
+def estimar_custo_de_cada_canil(indice_da_semana, caes_pequenos, caes_grandes):
     custo = []
-    meucaninofeliz = 0
-    vairex = 0
+    meu_canino_feliz = 0
+    vai_rex = 0
     # preço é o mesmo, independente do dia
-    chowchawgas = (caespequenos * 30) + (caesgrandes * 45)
-    if indicedasemana >= 0 and indicedasemana <= 4:  # dia de semana
-        meucaninofeliz = (caespequenos*20)+(caesgrandes*40)
-        vairex = (caespequenos*15)+(caesgrandes*50)
+    chow_chawgas = (caes_pequenos * 30) + (caes_grandes * 45)
+    if indice_da_semana >= 0 and indice_da_semana <= 4:  # dia de semana
+        meu_canino_feliz = (caes_pequenos*20)+(caes_grandes*40)
+        vai_rex = (caes_pequenos*15)+(caes_grandes*50)
     else:  # final de semana
-        meucaninofeliz = (caespequenos*24)+(caesgrandes*48)
-        vairex = (caespequenos*18)+(caesgrandes*60)
-    custo.append(meucaninofeliz)
-    custo.append(vairex)
-    custo.append(chowchawgas)
+        meu_canino_feliz = (caes_pequenos*24)+(caes_grandes*48)
+        vai_rex = (caes_pequenos*18)+(caes_grandes*60)
+    custo.append(meu_canino_feliz)
+    custo.append(vai_rex)
+    custo.append(chow_chawgas)
     return custo
 
-
-def petshopescolhido(custo):
+def escolher_petshop(custo):
     if custo[1] <= custo[0] and custo[1] < custo[2]:
         print('Vai Rex | R$'+str(custo[1]))
     elif custo[2] <= custo[1] and custo[2] <= custo[0]:
@@ -33,16 +35,22 @@ def petshopescolhido(custo):
     else:
         print('Meu Canino Feliz | R$'+str(custo[0]))
 
-def leitura(data, *quantidadedecaes):
-    caespequenos = int(quantidadedecaes[0])
-    caesgrandes = int(quantidadedecaes[1])
-    indicedasemana = indicedodia(data)  # 0-4: dia de semana; 5,6: final de semana
-    custo = custototaldecadacanil(indicedasemana, caespequenos, caesgrandes)
-    petshopescolhido(custo)
+def chamar_funcoes(data, *quantidade_de_caes):
+    caes_pequenos = int(quantidade_de_caes[0])
+    caes_grandes = int(quantidade_de_caes[1])
+    indice_da_semana = indicar_indice_do_dia(data)  # 0-4: dia de semana; 5,6: final de semana
+    custo = estimar_custo_de_cada_canil(indice_da_semana, caes_pequenos, caes_grandes)
+    escolher_petshop(custo)
 
-manipulador = open('pub.in', 'r')
-for linha in manipulador:
-    linha = linha.rstrip() 
-    data, *quantidadedecaes = input().split()
-    leitura(data, *quantidadedecaes)
-manipulador.close() 
+def ler_entradas_arquivo():
+    manipulador = open('pub.in', 'r')
+    for linha in manipulador:
+        linha = linha.rstrip() 
+        try:
+            data, *quantidade_de_caes = input().split()
+        except EOFError: 
+            exit()
+        chamar_funcoes(data, *quantidade_de_caes)
+    manipulador.close() 
+
+ler_entradas_arquivo()
